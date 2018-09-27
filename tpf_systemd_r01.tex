@@ -1,0 +1,102 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Gugler Labs, GNU/Linux, Trabajo Practico Final
+% Segundo cuatrimestre 2017
+%
+% octubre 2017, rev 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{placeins}
+
+\usepackage{fancyhdr}
+\setlength{\headheight}{15pt}
+\pagestyle{fancy}
+\lhead{}
+%\chead{\includegraphics[scale=0.5]{./banner.jpg}}
+\rhead{}
+\cfoot{P\'agina \thepage}
+
+\author{Leandro Torres}
+\title{\Huge{Trabajo Pr\'actico Final}\\
+	\vspace{5cm}
+	\huge{systemd a trav\'es de un caso de estudio}}
+%\date{}
+\begin{document}
+
+\maketitle
+\pagebreak
+\tableofcontents
+
+\section{Introducci\'on}
+
+Un cliente particular necesita llevar un control de una remodelaci\'on que se lleva a cabo en las instalaciones de la empresa en la que trabaja. Necesita tomar una fotograf\'ia cada hora durante dos semanas. Como no va a estar en el pa\'is durante 45 d\'ias necesita verlas desde cualquier parte del mundo. S\'olo tenemos acceso a un toma de 220V y un puerto ethernet con una conexi\'on de 2MB sim\'etrico. Las pol\'iticas de la empresa no permiten la apertura de puertos especiales, de modo que no podr\'iamos acceder remotamente a trav\'es de un servicio SSH; pero podr\'iamos tener acceso f\'isico en horarios de oficina. Por \'ultimo cabe destacar que los servicios de internet y electricidad suelen sufrir cortes espor\'adicos.\\
+
+Se ofrece al cliente colocar un m\'odulo \emph{Raspberry Pi 2 B+} (en adelante \emph{rpi2}) con una c\'amara anexada. Este m\'odulo se alimenta desde un cargador de bater\'ia para celular (a modo de UPS) conectado a la red de 220V. La conexi\'on a internet se realiza mediante el conexionado al puerto ethernet.\\
+
+Cada 60 minutos la rpi2 toma una fotograf\'ia de la obra y la guarda en un directorio alojado en el ra\'iz de un pendrive conectado a la rpi2 para tal fin (la capacidad supera en dos veces los requerimientos). Cada 6 horas la rpi2 sincroniza este directorio con uno en la cuenta \emph{gmail} abierta para tal fin (se utiliza el servicio \emph{Drive} de \emph{GMail}).
+
+\section{Preparaci\'on}
+
+En primer lugar debemos preparar el \emph{hardware}, esto es:
+\begin{itemize}
+    \item rpi2
+    \item Raspbian
+    \item alimentaci\'on
+    \item c\'amara
+\end{itemize}
+
+\subsection{rpi2}
+
+No es el prop\'osito de este trabajo ahondar sobre las caracter\'isticas de una rpi2, bastar\'a una breve descripci\'on de las capacidades que nos interesa.\\
+
+Una rpi2 es una computadora de bajo costo del tama\~no de una tarjeta de cr\'edito. Existen diferentes modelos, para este proyecto necesitamos el que tiene un puerto ethernet y al menos un puerto USB. El sistema operativo corre desde una tarjeta microSD\footnote{Con una capacidad de $4 GB$ estamos cubiertos.}.\\
+
+A continuaci\'on una breve enumeraci\'on de las caracter\'isticas t\'ecnicas:
+\begin{description}
+    \item[CPU] $900MHZ$ quad-core ARM Cortex-A7
+    \item[RAM] $1GB$
+    \item[USB] $4$ puertos
+    \item[ethernet] $1$ puerto de $100MB$
+    \item[Video] puerto HDMI
+    \item[Audio] jack stereo de $3.5mm$
+    \item[interface] una para la c\'amara y otra para un display, adem\'as de un pinout GPIO.
+\end{description}
+
+\subsection{Raspbian}
+
+Si decimos que una rpi2 es una \emph{computadora} podemos suponer que necesita un sistema operativo\footnote{Y hacemos bien en sospechar que se trata de una distribuci\'on GNU/Linux.}. En la p\'agina oficial de Raspberry Pi se encuentran disponibles varias alternativas, la que nos interesa es \emph{Raspbian}.\\
+
+Raspbian es el sistema operativo oficial de la Fundaci\'on Raspberry Pi. Es un sistema operativo basado en \emph{Debian} y compilado para correr en una rpi2\footnote{El SO es tan completo y al mismo tiempo tan liviano que existe una versi\'on para PC, \emph{Raspbian Pi Desktop}.}.\\
+
+Al momento de escribir este informe la \'ultima versi\'on disponible es de finales de junio de 2018, la versi\'on del kernel es 4.14. La \emph{versi\'on} de Raspian es \emph{Stretch}\footnote{En opini\'on del que escribe, el planeta Raspberry pertenece al universo Debian.}. Si bien la opci\'on popular es Raspbian con entorno gr\'afico vamos a optar por la versi\'on \emph{Lite}\footnote{No es otra cosa que el sistema base, lo que en la jerga se conoce como \emph{un debian pelado}.}.\\
+
+La \emph{instalaci\'on} se trata de \emph{copiar} el sistema Raspbian en la tarjeta microSD. Dicho as\'i no s\'olo es una sobresimplificaci\'on del procedimiento, sino tambi\'en de un error de conceptos; pero si lo pensamos bien \emph{todo} en un sistema GNU/Linux es un \emph{archivo}; y a diferencia de una PC, donde encontramos distintos dispositivos con diferentes \emph{firmwares}\footnote{En el universo Windows se los conoce como \emph{drives}.} una rpi2 es id\'entica a otra rpi2 que podemos conseguir en un local de Bangladesh, por lo que s\'olo se necesita compilar el sistema operativo una vez, crear la imagen y hacerla accesible para cualquiera que necesite clonarla.\\
+
+\section{Servicios}
+
+Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'odigo por muy simple que sea.
+\begin{itemize}
+    \item tomar foto
+    \item sincronizar carpeta con fotos
+    \item log
+\end{itemize}
+
+\section{Timers}
+
+Los servicios son disparados por \emph{systemd}.
+
+\section{Servicios al inicio}
+
+Hay servicios que deben ejecutarse al inicio, esto es, cada vez que la rpi2 bootee.
+
+\section{Conclusi\'on}
+
+La conclusi\'on es que systemd es m\'as complicado pero no nos queda otra.
+
+\end{document}
