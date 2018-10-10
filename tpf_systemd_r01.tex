@@ -8,11 +8,24 @@
 \documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
+\usepackage{siunitx}
 
-\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{placeins}
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{listings}
+\lstset{
+    breaklines=true,
+    basicstyle=\footnotesize,
+    frame=leftline,
+    texcl=true,
+    basicstyle=\ttfamily,
+    escapechar=!
+}
+\usepackage{graphicx}
+\graphicspath{ {./pictos/} }
 
 \usepackage{fancyhdr}
 \setlength{\headheight}{15pt}
@@ -37,9 +50,9 @@
 
 Un cliente particular necesita llevar un control de una remodelaci\'on que se lleva a cabo en las instalaciones de la empresa en la que trabaja. Necesita tomar una fotograf\'ia cada hora durante dos semanas. Como no va a estar en el pa\'is durante 45 d\'ias necesita verlas desde cualquier parte del mundo. S\'olo tenemos acceso a un toma de 220V y un puerto ethernet con una conexi\'on de 2MB sim\'etrico. Las pol\'iticas de la empresa no permiten la apertura de puertos especiales, de modo que no podr\'iamos acceder remotamente a trav\'es de un servicio SSH; pero podr\'iamos tener acceso f\'isico en horarios de oficina. Por \'ultimo cabe destacar que los servicios de internet y electricidad suelen sufrir cortes espor\'adicos.\\
 
-Se ofrece al cliente colocar un m\'odulo \emph{Raspberry Pi 2 B+} (en adelante \emph{rpi2}) con una c\'amara anexada. Este m\'odulo se alimenta desde un cargador de bater\'ia para celular (a modo de UPS) conectado a la red de 220V. La conexi\'on a internet se realiza mediante el conexionado al puerto ethernet.\\
+Se ofrece al cliente colocar un m\'odulo \emph{Raspberry Pi 2 B+} (en adelante \emph{rpi2}) con una c\'amara anexada. Este m\'odulo se alimenta desde un cargador de bater\'ia para celular (a modo de UPS) conectado a la red de \SI{220}{V}. La conexi\'on a internet se realiza mediante el conexionado al puerto ethernet.\\
 
-Cada 60 minutos la rpi2 toma una fotograf\'ia de la obra y la guarda en un directorio alojado en el ra\'iz de un pendrive conectado a la rpi2 para tal fin (la capacidad supera en dos veces los requerimientos). Cada 6 horas la rpi2 sincroniza este directorio con uno en la cuenta \emph{gmail} abierta para tal fin (se utiliza el servicio \emph{Drive} de \emph{GMail}).
+Cada \SI{60}{min} la rpi2 toma una fotograf\'ia de la obra y la guarda en un directorio alojado en el ra\'iz de un pendrive conectado a la rpi2 para tal fin. Cada \SI{6}{h} la rpi2 sincroniza este directorio con uno en la cuenta \emph{gmail} abierta para tal fin (se utiliza el servicio \emph{Drive} de \emph{GMail}).
 
 \section{Preparaci\'on}
 
@@ -49,22 +62,23 @@ En primer lugar debemos preparar el \emph{hardware}, esto es:
     \item Raspbian
     \item alimentaci\'on
     \item c\'amara
+    \item memoria USB
 \end{itemize}
 
 \subsection{rpi2}
 
 No es el prop\'osito de este trabajo ahondar sobre las caracter\'isticas de una rpi2, bastar\'a una breve descripci\'on de las capacidades que nos interesa.\\
 
-Una rpi2 es una computadora de bajo costo del tama\~no de una tarjeta de cr\'edito. Existen diferentes modelos, para este proyecto necesitamos el que tiene un puerto ethernet y al menos un puerto USB. El sistema operativo corre desde una tarjeta microSD\footnote{Con una capacidad de $4 GB$ estamos cubiertos.}.\\
+Una rpi2 es una computadora de bajo costo del tama\~no de una tarjeta de cr\'edito. Existen diferentes modelos, para este proyecto necesitamos el que tiene un puerto ethernet y al menos un puerto USB. El sistema operativo corre desde una tarjeta microSD\footnote{Con una capacidad de \SI{4}{GB} estamos cubiertos.}.\\
 
 A continuaci\'on una breve enumeraci\'on de las caracter\'isticas t\'ecnicas:
 \begin{description}
-    \item[CPU] $900MHZ$ quad-core ARM Cortex-A7
-    \item[RAM] $1GB$
+    \item[CPU] \SI{900}{MHz} quad-core ARM Cortex-A7
+    \item[RAM] \SI{1}{GB}
     \item[USB] $4$ puertos
-    \item[ethernet] $1$ puerto de $100MB$
+    \item[ethernet] $1$ puerto de \SI{100}{MB}
     \item[Video] puerto HDMI
-    \item[Audio] jack stereo de $3.5mm$
+    \item[Audio] jack stereo de \SI{3,5}{mm}
     \item[interface] una para la c\'amara y otra para un display, adem\'as de un pinout GPIO.
 \end{description}
 
@@ -76,7 +90,131 @@ Raspbian es el sistema operativo oficial de la Fundaci\'on Raspberry Pi. Es un s
 
 Al momento de escribir este informe la \'ultima versi\'on disponible es de finales de junio de 2018, la versi\'on del kernel es 4.14. La \emph{versi\'on} de Raspian es \emph{Stretch}\footnote{En opini\'on del que escribe, el planeta Raspberry pertenece al universo Debian.}. Si bien la opci\'on popular es Raspbian con entorno gr\'afico vamos a optar por la versi\'on \emph{Lite}\footnote{No es otra cosa que el sistema base, lo que en la jerga se conoce como \emph{un debian pelado}.}.\\
 
-La \emph{instalaci\'on} se trata de \emph{copiar} el sistema Raspbian en la tarjeta microSD. Dicho as\'i no s\'olo es una sobresimplificaci\'on del procedimiento, sino tambi\'en de un error de conceptos; pero si lo pensamos bien \emph{todo} en un sistema GNU/Linux es un \emph{archivo}; y a diferencia de una PC, donde encontramos distintos dispositivos con diferentes \emph{firmwares}\footnote{En el universo Windows se los conoce como \emph{drives}.} una rpi2 es id\'entica a otra rpi2 que podemos conseguir en un local de Bangladesh, por lo que s\'olo se necesita compilar el sistema operativo una vez, crear la imagen y hacerla accesible para cualquiera que necesite clonarla.\\
+La \emph{instalaci\'on} se trata de \emph{copiar} el sistema Raspbian en la tarjeta microSD. As\'i expresado es una sobresimplificaci\'on del procedimiento y un error de conceptos; pero bien pensado \emph{todo} en un sistema GNU/Linux es un \emph{archivo}; y a diferencia de una PC, donde encontramos distintos dispositivos con diferentes \emph{firmwares}\footnote{En el universo Windows se los conoce como \emph{drives}.} una rpi2 es id\'entica a otra rpi2 que podemos conseguir en un local de Bangladesh, por lo que s\'olo se necesita compilar el sistema operativo una vez, crear la imagen y hacerla accesible para cualquiera que necesite clonarla.\\
+
+En el siguiente c\'odigo vemos c\'omo listamos los dispositivos conectados buscando la microSD, desmontamos y clonamos el sistema operativo\footnote{Algunos comandos necesitan derechos de \emph{root}.}. La imagen que provee el sitio ofical est\'a comprimida en un archivo \emph{zip} que se descarg\'o en el directorio \emph{/tmp} y se la descomprimi\'o ah\'i\footnote{Bajo \emph{systemd} el directorio /tmp es montado autom\'aticamente con un sistema de archivo \emph{tmpfs}, esto es, en la memoria RAM del sistema.}.\\
+
+\begin{lstlisting}
+!\#! blkid -o list
+!\ldots!
+!\emph{mmcblk0p1 ... part /media/leandro/0403-0201}!
+!\ldots!
+
+!\#! umount /media/leandro/0403-0201
+
+!\#! 7z x /tmp/2018-06-27-raspbian-stretch-lite.zip
+
+!\#! dd bs=4M if=/tmp/2018-06-27-raspbian-stretch-lite.img of=/dev/mmcblk0 status=progress
+\end{lstlisting}
+
+\subsection{Energ\'ia}
+
+Este proyecto necesita una fuente de alimentaci\'on que resuelva el problema de los cortes espor\'adicos de energ\'ia. Podr\'ia emplearse una UPS\footnote{\emph{Uninterruptible Power Supply.}} pero con un cargador de celular que disponga de al menos una salida de energ\'ia \emph{mientras se est\'a cargando} resuelve el problema.\\
+
+No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato importante es la potencia que debe poder entregar en el momento de m\'aximo consumo, que es cuando la rpi2 bootea y cuando graba una fotograf\'ia en el USB (Cuadro \ref{tab:energia}).
+
+\begin{table}[h!]
+    \begin{center}
+        \begin{tabular}{llL}
+        \cline{1-2}
+        \multicolumn{1}{|l|}{\cellcolor[HTML]{EFEFEF}Situaci\'on}   & \multicolumn{1}{r|}{\cellcolor[HTML]{EFEFEF}Corriente}    & \\
+        \cline{1-2}
+        \multicolumn{1}{|l|}{boot + USB}                            & \multicolumn{1}{r|}{900-1400 mAh}                         & \\
+        \cline{1-2}
+        \multicolumn{1}{|l|}{ocioso (\emph{idle}) + USB}            & \multicolumn{1}{r|}{960 mAh}                              & \\
+        \cline{1-2}
+        \multicolumn{1}{|l|}{CPU con una carga al 400\% + USB}      & \multicolumn{1}{r|}{1250 mAh}                             & \\
+        \cline{1-2}
+        \multicolumn{1}{|l|}{idle + c\'amara + USB}                 & \multicolumn{1}{r|}{1200 mAh}                             &
+        \end{tabular}
+    \end{center}
+    \caption{Consumo aproximado}
+    \label{tab:energia}
+\end{table}
+
+\subsection{C\'amara}
+
+Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara modular, que se conecta mediante un cable plano dise\~nado para romperse con facilidad (Figura \ref{fig:ribbon}). Se compra, se conecta y funciona luego de habilitar el puerto. Consume alrededor de $250 mAh$ desde el momento en que es habilitada (para el caso, desde el booteo); \'este es un factor a tener en cuenta porque suele creerse que s\'olo consume energ\'ia cuando captura una imagen o graba un video, lo cierto es que hay un leve aumento de consumo pero es el proceso de \emph{grabar} la imagen en el disco (la memoria USB en este caso).\\
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.15]{connect-camera.jpg}
+    \caption{Conexi\'on de la c\'amara modular}
+    \label{fig:ribbon}
+\end{figure}
+
+\subsection{Memoria USB}
+
+Tomando en cuenta que se van a capturar fotograf\'ias una vez por hora durante 14 d\'ias se obtiene el n\'umero de im\'agenes que se deben guardar en la memoria USB: $336$. Cada fotograf\'ia tiene una resoluci\'on de \SI{1280x720}{p\'ixels}, cada p\'ixel necesita \SI{3}{B}\footnote{Uno por cada color \emph{RGB}.}, luego cada im\'agen es un archivo de \SI{2764800}{B}.\\
+
+Dicho lo cual, necesitamos una memoria USB de \SI{1}{GB}\footnote{Exactamente \SI{928972800}{B}.}. Hace a\~nos que no se fabrican memorias USB de menos de \SI{4}{GB}; incluso se podr\'ia prescindir de la memoria USB porque el espacio que todav\'ia queda en la memoria mSD es m\'as que suficiente.\\
+
+\subsubsection{3-2-1 backup rule}
+
+Si no se ha cultivado un esp\'iritu aventurero es conveniente tener un \emph{backup}. Seguiremos la conocida regla \textbf{3-2-1} para pol\'iticas de backup (Figura \ref{fig:321bkp}):
+\begin{center}
+    \begin{description}
+        \item 3 copias de las im\'agenes
+        \item 2 copias en medios f\'isicos distintos
+        \item 1 copia fuera del lugar f\'isico
+    \end{description}
+\end{center}
+
+Resumiendo, una vez obtenida la imagen se guarda en un directorio de la tarjeta mSD, se hace una copia en la memoria USB y cada \SI{6}{h} se la sube a una carpeta alojada en un servicio cloud.
+
+\begin{figure}
+\centering
+    \includegraphics[scale=0.2]{321backup.jpg}
+    \caption{3-2-1 backup rule}
+    \label{fig:321bkp}
+\end{figure}
+
+\subsubsection{Automontaje}
+
+En caso de una grave falla de energ\'ia, al punto de agotar la bater\'ia del power-bank, el sistema va a reiniciar en cuanto la energ\'ia se reestablezca. Se necesita, entonces, automontar la memoria USB. Systemd mediante, esta tarea es crear un archivo \emph{unit} del tipo \emph{mount} en el directorio \texttt{/etc/systemd/system}. Es necesario nombrar esta unit de acuerdo al punto de montaje, en este caso, \texttt{mnt-bkpUSB.mount}.
+\begin{lstlisting}
+!\#! mkdir /mnt/bkpUSB
+!\#! touch /etc/systemd/system/mnt-bkpUSB.mount
+\end{lstlisting}
+
+se busca el UUID\footnote{\emph{Universally Unique IDentifiers}, es una forma un\'ivoca de identificar un dispositivo de almacenamiento.} de la memoria USB:\\
+\lstinline{# blkid}\\
+
+para finalmente editar la unidad de montaje como en el Cuadro \ref{tab:uMount}.\\
+\lstinline{# vim /etc/systemd/system/mnt-bkpUSB.mount}\\
+\begin{table}[h!]
+\begin{center}
+    \begin{tabular}{l}
+    \rowcolor[HTML]{FFCC67} 
+    /etc/systemd/system/mnt-bkpUSB.mount\\
+    \rowcolor[HTML]{FFFC9E} 
+    \begin{tabular}[c]{@{}l@{}}
+    {[}Unit{]}\\
+    Description=USB backup\\
+    Before=local-fs.target umount.target\\
+    \\
+    {[}Mount{]}\\
+    What=/dev/disk/by-uuid/...\\
+    Where=/mnt/bkpUSB\\
+    Type=ext4\\
+    Options=defaults\\
+    \\
+    {[}Install{]}\\
+    WantedBy=local-fs.target
+    \end{tabular}
+    \end{tabular}
+\caption{Unidad de Montaje}
+\label{tab:uMount}
+\end{center}
+\end{table}
+
+Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una l\'inea como la siguiente\footnote{La opci\'on \emph{auto} indica que se automonte.}:
+\begin{scriptsize}
+\begin{verbatim}
+<file system>       <mount point>   <type>  <options>               <dump>  <pass>
+UUID=73a104af-6a... /mnt/bkpUSB     ext4    defaults,noatime,auto   0       0
+\end{verbatim}
+\end{scriptsize}
 
 \section{Servicios}
 

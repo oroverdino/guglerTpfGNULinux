@@ -1,0 +1,19 @@
+# consulted web articles
+
+https://opensource.com/resources/raspberry-pi
+https://www.raspberrypi.org/help/what-%20is-a-raspberry-pi/
+https://www.pidramble.com/wiki/benchmarks/power-consumption
+https://wiki.archlinux.org/index.php/tmpfs
+https://picamera.readthedocs.io/en/latest/fov.html
+https://www.veeam.com/blog/how-to-follow-the-3-2-1-backup-rule-with-veeam-backup-replication.html
+
+## raspbian boot
+https://raspberrypi.stackexchange.com/questions/39959/raspbian-boot-process-and-the-partition-table
+
+## systemd
+https://oguya.ch/posts/2015-09-01-systemd-mount-partition/
+https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+
+## pictures taken
+https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/6
+https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md
