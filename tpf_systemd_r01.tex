@@ -15,6 +15,10 @@
 \usepackage{placeins}
 \usepackage[table,xcdraw]{xcolor}
 
+\usepackage{framed,color}
+\definecolor{shadecolor}{rgb}{1,1,0.9}
+\usepackage{mdframed}[backgroundcolor=yellow]
+
 \usepackage{listings}
 \lstset{
     breaklines=true,
@@ -94,18 +98,14 @@ La \emph{instalaci\'on} se trata de \emph{copiar} el sistema Raspbian en la tarj
 
 En el siguiente c\'odigo vemos c\'omo listamos los dispositivos conectados buscando la microSD, desmontamos y clonamos el sistema operativo\footnote{Algunos comandos necesitan derechos de \emph{root}.}. La imagen que provee el sitio ofical est\'a comprimida en un archivo \emph{zip} que se descarg\'o en el directorio \emph{/tmp} y se la descomprimi\'o ah\'i\footnote{Bajo \emph{systemd} el directorio /tmp es montado autom\'aticamente con un sistema de archivo \emph{tmpfs}, esto es, en la memoria RAM del sistema.}.\\
 
+\begin{scriptsize}
 \begin{lstlisting}
 !\#! blkid -o list
-!\ldots!
-!\emph{mmcblk0p1 ... part /media/leandro/0403-0201}!
-!\ldots!
-
 !\#! umount /media/leandro/0403-0201
-
 !\#! 7z x /tmp/2018-06-27-raspbian-stretch-lite.zip
-
 !\#! dd bs=4M if=/tmp/2018-06-27-raspbian-stretch-lite.img of=/dev/mmcblk0 status=progress
 \end{lstlisting}
+\end{scriptsize}
 
 \subsection{Energ\'ia}
 
@@ -180,40 +180,41 @@ En caso de una grave falla de energ\'ia, al punto de agotar la bater\'ia del pow
 se busca el UUID\footnote{\emph{Universally Unique IDentifiers}, es una forma un\'ivoca de identificar un dispositivo de almacenamiento.} de la memoria USB:\\
 \lstinline{# blkid}\\
 
-para finalmente editar la unidad de montaje como en el Cuadro \ref{tab:uMount}.\\
-\lstinline{# vim /etc/systemd/system/mnt-bkpUSB.mount}\\
-\begin{table}[h!]
-\begin{center}
-    \begin{tabular}{l}
-    \rowcolor[HTML]{FFCC67} 
-    /etc/systemd/system/mnt-bkpUSB.mount\\
-    \rowcolor[HTML]{FFFC9E} 
-    \begin{tabular}[c]{@{}l@{}}
-    {[}Unit{]}\\
-    Description=USB backup\\
-    Before=local-fs.target umount.target\\
-    \\
-    {[}Mount{]}\\
-    What=/dev/disk/by-uuid/...\\
-    Where=/mnt/bkpUSB\\
-    Type=ext4\\
-    Options=defaults\\
-    \\
-    {[}Install{]}\\
-    WantedBy=local-fs.target
-    \end{tabular}
-    \end{tabular}
-\caption{Unidad de Montaje}
-\label{tab:uMount}
-\end{center}
-\end{table}
+para finalmente editar la unidad de montaje como a continuaci\'on:
+\begin{scriptsize}
+\begin{mdframed}
+%\begin{shaded}
+%\begin{lstlisting}
+\begin{verbatim}
+[Unit]
+Description=USB backup
+Before=local-fs.target umount.target
+
+[Mount]
+What=/dev/disk/by-uuid/...
+Where=/mnt/bkpUSB
+Type=ext4
+Options=defaults
+
+[Install]
+WantedBy=local-fs.target
+\end{verbatim}
+%\end{lstlisting}
+%\end{shaded}
+\end{mdframed}
+\end{scriptsize}
+
+Por \'ultimo se activa la unidad, de otro modo systemd la pasar\'a por alto:\\
+\lstinline{# systemctl enable mnt-bkpUSB.mount}\\
 
 Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una l\'inea como la siguiente\footnote{La opci\'on \emph{auto} indica que se automonte.}:
 \begin{scriptsize}
+\begin{mdframed}
 \begin{verbatim}
 <file system>       <mount point>   <type>  <options>               <dump>  <pass>
 UUID=73a104af-6a... /mnt/bkpUSB     ext4    defaults,noatime,auto   0       0
 \end{verbatim}
+\end{mdframed}
 \end{scriptsize}
 
 \section{Servicios}
