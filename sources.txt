@@ -10,6 +10,10 @@ https://www.veeam.com/blog/how-to-follow-the-3-2-1-backup-rule-with-veeam-backup
 ## raspbian boot
 https://raspberrypi.stackexchange.com/questions/39959/raspbian-boot-process-and-the-partition-table
 
+## journal checksumming
+https://www.kernel.org/doc/Documentation/filesystems/ext4.txt
+https://ext4.wiki.kernel.org/index.php/Ext4_Metadata_Checksums
+
 ## systemd
 https://oguya.ch/posts/2015-09-01-systemd-mount-partition/
 https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files

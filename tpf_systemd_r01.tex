@@ -177,21 +177,19 @@ En caso de una grave falla de energ\'ia, al punto de agotar la bater\'ia del pow
 !\#! touch /etc/systemd/system/mnt-bkpUSB.mount
 \end{lstlisting}
 
-se busca el UUID\footnote{\emph{Universally Unique IDentifiers}, es una forma un\'ivoca de identificar un dispositivo de almacenamiento.} de la memoria USB:\\
+Se busca el UUID\footnote{\emph{Universally Unique IDentifiers}, es una forma un\'ivoca de identificar un dispositivo de almacenamiento.} de la memoria USB:\\
 \lstinline{# blkid}\\
 
-para finalmente editar la unidad de montaje como a continuaci\'on:
+Para finalmente editar la unidad de montaje como a continuaci\'on:
 \begin{scriptsize}
 \begin{mdframed}
-%\begin{shaded}
-%\begin{lstlisting}
 \begin{verbatim}
 [Unit]
 Description=USB backup
 Before=local-fs.target umount.target
 
 [Mount]
-What=/dev/disk/by-uuid/...
+What=/dev/disk/by-uuid/87dcbe0c-1e1f-4de7-8f1e-65bcb37a4152
 Where=/mnt/bkpUSB
 Type=ext4
 Options=defaults
@@ -199,12 +197,10 @@ Options=defaults
 [Install]
 WantedBy=local-fs.target
 \end{verbatim}
-%\end{lstlisting}
-%\end{shaded}
 \end{mdframed}
 \end{scriptsize}
 
-Por \'ultimo se activa la unidad, de otro modo systemd la pasar\'a por alto:\\
+Por \'ultimo se activa la unidad, esto es, indicarle a systemd que debe ser ejecutada \emph{cada vez que el sistema bootee}:\\
 \lstinline{# systemctl enable mnt-bkpUSB.mount}\\
 
 Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una l\'inea como la siguiente\footnote{La opci\'on \emph{auto} indica que se automonte.}:
@@ -212,10 +208,20 @@ Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una 
 \begin{mdframed}
 \begin{verbatim}
 <file system>       <mount point>   <type>  <options>               <dump>  <pass>
-UUID=73a104af-6a... /mnt/bkpUSB     ext4    defaults,noatime,auto   0       0
+UUID=87dcbe0c-1e1f-4d... /mnt/bkpUSB     ext4    defaults,noatime,auto   0       0
 \end{verbatim}
 \end{mdframed}
 \end{scriptsize}
+
+\subsubsection{Journaling}
+
+No es imprescindible que la memoria USB tenga un sistema de archivos con \emph{journaling}. El journaling es una t\'ecnica implementada en algunos \emph{filesystems} que aseguran la integridad de los archivos; nos permite un alto grado de confianza cuando copiamos archivos de un medio a otro.\\
+
+En los sistemas GNU/Linux es posible elegir entre varios filesystems, donde \textbf{ext4} es el favorito de muchas distribuciones. A efectos de ser prolijos, formateamos la memoria USB con \'ese filesystem\footnote{?'Por qu\'e no ntfs? Porque este informe puede prescindir de \emph{Windows}.}. Desmontamos la memoria USB\footnote{En una rpi2 el primer pendrive es asignado como /dev/sda.} y lo formateamos con una peligrosa facilidad:
+\begin{lstlisting}
+!\#! umount /dev/sda1
+!\#! mkfs.ext4 /dev/sda1
+\end{lstlisting}
 
 \section{Servicios}
 
