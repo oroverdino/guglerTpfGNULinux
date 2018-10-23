@@ -2,7 +2,7 @@
 % Gugler Labs, GNU/Linux, Trabajo Practico Final
 % Segundo cuatrimestre 2017
 %
-% octubre 2017, rev 1
+% octubre 2018, rev 2
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass[10pt,a4paper]{article}
@@ -77,13 +77,13 @@ Una rpi2 es una computadora de bajo costo del tama\~no de una tarjeta de cr\'edi
 
 A continuaci\'on una breve enumeraci\'on de las caracter\'isticas t\'ecnicas:
 \begin{description}
-    \item[CPU] \SI{900}{MHz} quad-core ARM Cortex-A7
-    \item[RAM] \SI{1}{GB}
-    \item[USB] $4$ puertos
-    \item[ethernet] $1$ puerto de \SI{100}{MB}
-    \item[Video] puerto HDMI
-    \item[Audio] jack stereo de \SI{3,5}{mm}
-    \item[interface] una para la c\'amara y otra para un display, adem\'as de un pinout GPIO.
+    \item [CPU] \SI{900}{MHz} quad-core ARM Cortex-A7
+    \item [RAM] \SI{1}{GB}
+    \item [USB] $4$ puertos
+    \item [ethernet] $1$ puerto de \SI{100}{MB}
+    \item [Video] puerto HDMI
+    \item [Audio] jack stereo de \SI{3,5}{mm}
+    \item [interface] una para la c\'amara y otra para un display, adem\'as de un pinout GPIO.
 \end{description}
 
 \subsection{Raspbian}
@@ -115,7 +115,7 @@ No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato 
 
 \begin{table}[h!]
     \begin{center}
-        \begin{tabular}{llL}
+        \begin{tabular}{lll}
         \cline{1-2}
         \multicolumn{1}{|l|}{\cellcolor[HTML]{EFEFEF}Situaci\'on}   & \multicolumn{1}{r|}{\cellcolor[HTML]{EFEFEF}Corriente}    & \\
         \cline{1-2}
@@ -145,20 +145,18 @@ Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara m
 
 \subsection{Memoria USB}
 
-Tomando en cuenta que se van a capturar fotograf\'ias una vez por hora durante 14 d\'ias se obtiene el n\'umero de im\'agenes que se deben guardar en la memoria USB: $336$. Cada fotograf\'ia tiene una resoluci\'on de \SI{1280x720}{p\'ixels}, cada p\'ixel necesita \SI{3}{B}\footnote{Uno por cada color \emph{RGB}.}, luego cada im\'agen es un archivo de \SI{2764800}{B}.\\
+Tomando en cuenta que se van a capturar fotograf\'ias una vez por hora durante 14 d\'ias se obtiene el n\'umero de im\'agenes que se deben guardar en la memoria USB: $336$. Cada fotograf\'ia tiene una resoluci\'on de \SI{1280x720}{pixels}, cada p\'ixel necesita \SI{3}{B}\footnote{Uno por cada color \emph{RGB}.}, luego cada im\'agen es un archivo de \SI{2764800}{B}.\\
 
 Dicho lo cual, necesitamos una memoria USB de \SI{1}{GB}\footnote{Exactamente \SI{928972800}{B}.}. Hace a\~nos que no se fabrican memorias USB de menos de \SI{4}{GB}; incluso se podr\'ia prescindir de la memoria USB porque el espacio que todav\'ia queda en la memoria mSD es m\'as que suficiente.\\
 
 \subsubsection{3-2-1 backup rule}
 
 Si no se ha cultivado un esp\'iritu aventurero es conveniente tener un \emph{backup}. Seguiremos la conocida regla \textbf{3-2-1} para pol\'iticas de backup (Figura \ref{fig:321bkp}):
-\begin{center}
-    \begin{description}
-        \item 3 copias de las im\'agenes
-        \item 2 copias en medios f\'isicos distintos
-        \item 1 copia fuera del lugar f\'isico
-    \end{description}
-\end{center}
+\begin{description}
+    \item [3] copias de las im\'agenes
+    \item [2] copias en medios f\'isicos distintos
+    \item [1] copia fuera del lugar f\'isico
+\end{description}
 
 Resumiendo, una vez obtenida la imagen se guarda en un directorio de la tarjeta mSD, se hace una copia en la memoria USB y cada \SI{6}{h} se la sube a una carpeta alojada en un servicio cloud.
 
@@ -200,8 +198,17 @@ WantedBy=local-fs.target
 \end{mdframed}
 \end{scriptsize}
 
-Por \'ultimo se activa la unidad, esto es, indicarle a systemd que debe ser ejecutada \emph{cada vez que el sistema bootee}:\\
-\lstinline{# systemctl enable mnt-bkpUSB.mount}\\
+Veamos brevemente qu\'e es lo que configuramos en esta \emph{unidad}:
+
+\begin{description}
+    \item [Description=] Aqu\'i debe indicarse brevemente y lo m\'as claro que se pueda qu\'e es lo que hace esta unidad.
+    \item [Before=] En este caso le estamos indicando a systemd que retrase el inicio de local-fs.target y umount.target hasta que nuestra unidad termine de iniciar. Evitamos as\'i alg\'un conflicto (por ejemplo, que nuestra memoria USB se monte en /media/leandro/ y no en /mnt/bkpUSB).\\
+    \item [What=] Indicamos unequ\'ivacamente el dispositivo que queremos montar.
+    \item [Where=] Indicamos d\'onde queremos montar ese dispositivo.
+    \item [Type=] Cu\'al es el sistema de archivos que va a montar (\emph{filesystem}).
+    \item [Options=] Las opciones de montaje, que conviene en \'este caso dejarlas predeterminadas.
+    \item [WantedBy=] Aqu\'i indicamos qu\'e unidad o servicio va a iniciar a \'esta unidad. No lo maneja systemd directamente, sino cuando se lo instala (cosa que debemos hacer para completar el automontaje, esto es: \lstinline{# systemctl enable mnt-bkpUSB.mount}) se crea un enlace simb\'olico de esta unidad en el directorio \emph{local-fs.target.wants}, que cuando inicia local-fs.target inicia mnt-bkpUSB.mount\footnote{Momento, ?`no le indicamos en \texttt{Before=} que retrase el inicio de local-fs.target?, ?`por qu\'e le decimos ahora que sea local-fs.target quien inicie a mnt-bkpUSB.mount? Brevemente: systemd sabe que tiene que iniciar local-fs.target, no mnt-bkpUSB.mount, a resultas nuestra unidad de automontaje inicia \emph{antes} pero \emph{a pedido} de local-fs.target.}.
+\end{description}
 
 Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una l\'inea como la siguiente\footnote{La opci\'on \emph{auto} indica que se automonte.}:
 \begin{scriptsize}
@@ -217,7 +224,7 @@ UUID=87dcbe0c-1e1f-4d... /mnt/bkpUSB     ext4    defaults,noatime,auto   0      
 
 No es imprescindible que la memoria USB tenga un sistema de archivos con \emph{journaling}. El journaling es una t\'ecnica implementada en algunos \emph{filesystems} que aseguran la integridad de los archivos; nos permite un alto grado de confianza cuando copiamos archivos de un medio a otro.\\
 
-En los sistemas GNU/Linux es posible elegir entre varios filesystems, donde \textbf{ext4} es el favorito de muchas distribuciones. A efectos de ser prolijos, formateamos la memoria USB con \'ese filesystem\footnote{?'Por qu\'e no ntfs? Porque este informe puede prescindir de \emph{Windows}.}. Desmontamos la memoria USB\footnote{En una rpi2 el primer pendrive es asignado como /dev/sda.} y lo formateamos con una peligrosa facilidad:
+En los sistemas GNU/Linux es posible elegir entre varios filesystems, donde \textbf{ext4} es el favorito de muchas distribuciones. A efectos de ser prolijos, formateamos la memoria USB con \'ese filesystem\footnote{?`Por qu\'e no ntfs? Porque este informe puede prescindir de \emph{Windows}.}. Desmontamos la memoria USB\footnote{En una rpi2 el primer pendrive es asignado como /dev/sda.} y lo formateamos con una peligrosa facilidad:
 \begin{lstlisting}
 !\#! umount /dev/sda1
 !\#! mkfs.ext4 /dev/sda1
@@ -235,10 +242,6 @@ Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'od
 \section{Timers}
 
 Los servicios son disparados por \emph{systemd}.
-
-\section{Servicios al inicio}
-
-Hay servicios que deben ejecutarse al inicio, esto es, cada vez que la rpi2 bootee.
 
 \section{Conclusi\'on}
 
