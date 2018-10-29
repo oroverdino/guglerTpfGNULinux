@@ -14,6 +14,7 @@
 \usepackage{booktabs}
 \usepackage{placeins}
 \usepackage[table,xcdraw]{xcolor}
+\usepackage{epigraph}
 
 \usepackage{framed,color}
 \definecolor{shadecolor}{rgb}{1,1,0.9}
@@ -51,6 +52,8 @@
 \tableofcontents
 
 \section{Introducci\'on}
+
+\epigraph{Systemd no s\'olo es el reemplazo para el proceso init en s\'i, sino tambi\'en para toda la infraestructura que est\'a construida sobre \'el.}{systemd in SUSE Linux Enterprise 12}
 
 Un cliente particular necesita llevar un control de una remodelaci\'on que se lleva a cabo en las instalaciones de la empresa en la que trabaja. Necesita tomar una fotograf\'ia cada hora durante dos semanas. Como no va a estar en el pa\'is durante 45 d\'ias necesita verlas desde cualquier parte del mundo. S\'olo tenemos acceso a un toma de 220V y un puerto ethernet con una conexi\'on de 2MB sim\'etrico. Las pol\'iticas de la empresa no permiten la apertura de puertos especiales, de modo que no podr\'iamos acceder remotamente a trav\'es de un servicio SSH; pero podr\'iamos tener acceso f\'isico en horarios de oficina. Por \'ultimo cabe destacar que los servicios de internet y electricidad suelen sufrir cortes espor\'adicos.\\
 
@@ -203,7 +206,7 @@ Veamos brevemente qu\'e es lo que configuramos en esta \emph{unidad}:
 \begin{description}
     \item [Description=] Aqu\'i debe indicarse brevemente y lo m\'as claro que se pueda qu\'e es lo que hace esta unidad.
     \item [Before=] En este caso le estamos indicando a systemd que retrase el inicio de local-fs.target y umount.target hasta que nuestra unidad termine de iniciar. Evitamos as\'i alg\'un conflicto (por ejemplo, que nuestra memoria USB se monte en /media/leandro/ y no en /mnt/bkpUSB).\\
-    \item [What=] Indicamos unequ\'ivacamente el dispositivo que queremos montar.
+    \item [What=] Indicamos unequ\'ivocamente el dispositivo que queremos montar.
     \item [Where=] Indicamos d\'onde queremos montar ese dispositivo.
     \item [Type=] Cu\'al es el sistema de archivos que va a montar (\emph{filesystem}).
     \item [Options=] Las opciones de montaje, que conviene en \'este caso dejarlas predeterminadas.
@@ -232,19 +235,35 @@ En los sistemas GNU/Linux es posible elegir entre varios filesystems, donde \tex
 
 \section{Servicios}
 
-Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'odigo por muy simple que sea.
-\begin{itemize}
-    \item tomar foto
-    \item sincronizar carpeta con fotos
-    \item log
-\end{itemize}
+Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'odigo por muy simple que sea. Por ejemplo, vamos a suponer que para tomar una fotograf\'ia s\'olo debe ejecutarse un script al que llamaremos \emph{tomarFoto.sh}\footnote{Supondr\'iamos bien.}; para sincronizar\footnote{Sincronizar no es \emph{copiar}, es comparar la carpeta de origen con la de destino y dejarla igual, borrando los archivos que ya no est\'an en la carpeta origen y copiando los que todav\'ia no.} la carpeta de fotograf\'ias en la rpi2 con la carpeta alojada en el servidor \emph{Drive} no necesitamos un script porque se hace con una l\'inea de comando\footnote{Vamos a ignorar el control de errores, porque en alg\'un momento este informe tiene que terminarse.} por lo que la estructura es la misma.\\
+
+Ha llegado el momento de configurar los servicios en systemd.\\
 
 \section{Timers}
+
+Entonces, cada \SI{60}{min} se ejecutan tres scripts:
+\begin{enumerate}
+    \item tomar foto
+    \item sincronizar carpeta de fotos de la rpi2 con la memoria USB
+    \item log
+\end{enumerate}
+
+Y cada \SI{6}{h} se ejecutan dos scripts:
+\begin{enumerate}
+    \item sincronizar carpeta de fotos de la rpi2 con el servidor Drive
+    \item log
+\end{enumerate}
 
 Los servicios son disparados por \emph{systemd}.
 
 \section{Conclusi\'on}
 
 La conclusi\'on es que systemd es m\'as complicado pero no nos queda otra.
+
+Para automontar el USB hay que escribir mas cosas que antes, pero no modificamos archivos del sistema.
+
+Systemd parece ir en contra de la filosofia de unix: evitar los programas monoliticos (un programa por cada tarea)
+
+Los manuales estan en: \$ man systemd.{unit, mount, timer}
 
 \end{document}
