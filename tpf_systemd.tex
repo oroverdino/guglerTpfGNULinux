@@ -24,7 +24,7 @@
 \lstset{
     breaklines=true,
     basicstyle=\footnotesize,
-    frame=leftline,
+    %frame=leftline,
     texcl=true,
     basicstyle=\ttfamily,
     escapechar=!
@@ -101,14 +101,12 @@ La \emph{instalaci\'on} se trata de \emph{copiar} el sistema Raspbian en la tarj
 
 En el siguiente c\'odigo vemos c\'omo listamos los dispositivos conectados buscando la microSD, desmontamos y clonamos el sistema operativo\footnote{Algunos comandos necesitan derechos de \emph{root}.}. La imagen que provee el sitio ofical est\'a comprimida en un archivo \emph{zip} que se descarg\'o en el directorio \emph{/tmp} y se la descomprimi\'o ah\'i\footnote{Bajo \emph{systemd} el directorio /tmp es montado autom\'aticamente con un sistema de archivo \emph{tmpfs}, esto es, en la memoria RAM del sistema.}.\\
 
-\begin{scriptsize}
 \begin{lstlisting}
 !\#! blkid -o list
 !\#! umount /media/leandro/0403-0201
 !\#! 7z x /tmp/2018-06-27-raspbian-stretch-lite.zip
 !\#! dd bs=4M if=/tmp/2018-06-27-raspbian-stretch-lite.img of=/dev/mmcblk0 status=progress
 \end{lstlisting}
-\end{scriptsize}
 
 \subsection{Energ\'ia}
 
@@ -235,9 +233,36 @@ En los sistemas GNU/Linux es posible elegir entre varios filesystems, donde \tex
 
 \section{Servicios}
 
-Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'odigo por muy simple que sea. Por ejemplo, vamos a suponer que para tomar una fotograf\'ia s\'olo debe ejecutarse un script al que llamaremos \emph{tomarFoto.sh}\footnote{Supondr\'iamos bien.}; para sincronizar\footnote{Sincronizar no es \emph{copiar}, es comparar la carpeta de origen con la de destino y dejarla igual, borrando los archivos que ya no est\'an en la carpeta origen y copiando los que todav\'ia no.} la carpeta de fotograf\'ias en la rpi2 con la carpeta alojada en el servidor \emph{Drive} no necesitamos un script porque se hace con una l\'inea de comando\footnote{Vamos a ignorar el control de errores, porque en alg\'un momento este informe tiene que terminarse.} por lo que la estructura es la misma.\\
+Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'odigo por muy simple que sea. Por ejemplo, vamos a suponer que para tomar una fotograf\'ia s\'olo debe ejecutarse un script al que llamaremos \emph{tomarFoto.sh}\footnote{El script puede estar en cualquier lugar, s\'olo debemos recordar asignarle el permiso de ejecuci\'on.}; para sincronizar\footnote{Sincronizar no es \emph{copiar}, es comparar la carpeta de origen con la de destino y dejarla igual, borrando los archivos que ya no est\'an en la carpeta origen y copiando los que todav\'ia no.} la carpeta de fotograf\'ias en la rpi2 con la carpeta alojada en el servidor \emph{Drive} no necesitamos un script porque se hace con una l\'inea de comando\footnote{Vamos a ignorar el control de errores, porque en alg\'un momento este informe tiene que terminarse.} por lo que la estructura es la misma.\\
 
-Ha llegado el momento de configurar los servicios en systemd.\\
+Ha llegado el momento de configurar los servicios en systemd. Para entender cabalmente los servicios que se necesitan repasemos los requerimientos.\\
+
+Por cada hora se toma una fotograf\'ia que es guardada en un directorio del sistema, /home/pi/Fotos, y se escribe una entrada registrando el evento. Entonces necesitamos una \emph{unit.timer}: \textbf{tomarFoto.timer}, que active una \emph{unit.service}: \textbf{tomarFoto.service}, que tome la fotograf\'ia y active otra \emph{unit.service}: \textbf{tomarFotoLog.service}, que realice el log. Cada vez que el directorio /home/pi/Fotos cambie (es decir, cuando se crea un nuevo archivo en \'el) se activa una \emph{unit.path}: \textbf{syncUSB.path}, que activa una \emph{unit.service}: \textbf{syncUSB.service} que sincroniza ese directorio con otro directorio en la memoria USB, que a su vez activa una \emph{unit.service}: \textbf{syncUSBLog.service}, que hace un logging\footnote{Acci\'on de realizar un log} de esta acci\'on.\\
+
+Cada \SI{6}{h} se sincroniza la carpeta /home/pi/Fotos con una carpeta en el cloud de Drive y se hace un logging de esta acci\'on. Ya deber\'iamos sospechar lo que necesitamos, una \emph{unit.timer}: \textbf{syncDrive.timer}, que active una \emph{unit.service}: \textbf{syncDrive.service}, que sincronice y que a su vez active una \emph{unit.service}: \textbf{syncDriveLog.service}, que haga el log.\\
+
+Empecemos por el servicio que justifica este informe: \emph{tomarFoto.service}\\
+
+\begin{lstlisting}
+!\#! touch /etc/systemd/system/tomarFoto.service
+!\#! chmod 644 /etc/systemd/system/tomarFoto.service!\footnote{Por convenci\'on todos los usuarios tienen permiso de lectura y negados para la ejecuci\'on; y s\'olo el root deber\'ia poder editarlos.}!
+!\#! vim /etc/systemd/system/tomarFoto.service
+\end{lstlisting}
+
+\begin{scriptsize}
+\begin{mdframed}
+\begin{verbatim}
+[Unit]
+Description=Captura una foto
+
+[Service]
+Type=oneshot
+ExecStart=/home/leandro/scripts/tomarFoto.sh
+\end{verbatim}
+\end{mdframed}
+\end{scriptsize}
+
+Por convenci\'on las unit de servicio se nombran como el servicio que ejecutan.
 
 \section{Timers}
 
@@ -255,6 +280,22 @@ Y cada \SI{6}{h} se ejecutan dos scripts:
 \end{enumerate}
 
 Los servicios son disparados por \emph{systemd}.
+
+\begin{scriptsize}
+\begin{mdframed}
+\begin{verbatim}
+[Unit]
+Description=Test del timer de systemd
+
+[Timer]
+#OnCalendar=*:0/3
+OnCalendar=hourly
+
+[Install]
+WantedBy=timers.target
+\end{verbatim}
+\end{mdframed}
+\end{scriptsize}
 
 \section{Conclusi\'on}
 
