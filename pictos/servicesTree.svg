@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.1 r15371"
+   sodipodi:docname="servicesTree.svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient4681"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop4679" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 148.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="210 : 148.5 : 1"
+       inkscape:persp3d-origin="105 : 99 : 1"
+       id="perspective3846" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.56126601"
+     inkscape:cx="382.58298"
+     inkscape:cy="529.69986"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-grids="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="1366"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g6649"
+       inkscape:export-xdpi="47.139999"
+       inkscape:export-ydpi="47.139999">
+      <rect
+         ry="6"
+         y="208.97562"
+         x="40.250275"
+         height="12"
+         width="95.333336"
+         id="rect4669-7"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.22229445;stroke-opacity:1" />
+      <flowRoot
+         transform="translate(35.826744,12.727922)"
+         id="flowRoot6180"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           style="fill:#ffffff;fill-opacity:1"
+           id="flowRegion6182"><use
+             id="use6184"
+             xlink:href="#rect4669-7"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
+           id="flowPara6186">syncDrive.timer</flowPara></flowRoot>      <rect
+         ry="2.8800042"
+         y="220.97562"
+         x="135.5836"
+         height="12"
+         width="101.66668"
+         id="rect6188-2"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.17517;stroke-opacity:1" />
+      <rect
+         ry="2.8800042"
+         y="244.97562"
+         x="25.583641"
+         height="12"
+         width="120.33334"
+         id="rect6188-15"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.1905739;stroke-opacity:1" />
+      <flowRoot
+         transform="translate(35.826744,12.727922)"
+         id="flowRoot6273"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6275"><use
+             id="use6277"
+             xlink:href="#rect6188-2"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
+           id="flowPara6279">syncDrive.service</flowPara></flowRoot>      <flowRoot
+         transform="translate(35.826744,12.727922)"
+         id="flowRoot6281"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6283"><use
+             id="use6285"
+             xlink:href="#rect6188-15"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
+           id="flowPara6287">syncDriveLog.service</flowPara></flowRoot>      <rect
+         ry="2.8800042"
+         y="256.97562"
+         x="52.583649"
+         height="12"
+         width="93.333344"
+         id="rect6188-9-4"
+         style="fill:#fcf765;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.16783744;stroke-opacity:1;paint-order:markers stroke fill" />
+      <flowRoot
+         transform="translate(35.826744,12.727922)"
+         id="flowRoot6330"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6332"><use
+             id="use6334"
+             xlink:href="#rect6188-9-4"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
+           id="flowPara6336">syncDriveLog.sh</flowPara></flowRoot>      <rect
+         ry="2.8800042"
+         y="232.97562"
+         x="25.583641"
+         height="12"
+         width="211.66667"
+         id="rect6188-9-0-7"
+         style="fill:#a8de92;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.25275323;stroke-opacity:1;paint-order:markers stroke fill" />
+      <flowRoot
+         transform="translate(35.826744,12.727922)"
+         id="flowRoot6414"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6416"><use
+             id="use6418"
+             xlink:href="#rect6188-9-0-7"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
+           id="flowPara6420">rclone sync /home/pi/Fotos drive:Fotos</flowPara></flowRoot>    </g>
+    <g
+       id="g6935"
+       inkscape:export-xdpi="47.139999"
+       inkscape:export-ydpi="47.139999">
+      <path
+         inkscape:connector-curvature="0"
+         inkscape:connector-type="polyline"
+         id="path3765"
+         d="m -27.178019,73.91337 v 0"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <rect
+         ry="6"
+         y="25.580372"
+         x="151.15532"
+         height="12"
+         width="95.333336"
+         id="rect4669"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.22229445;stroke-opacity:1" />
+      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6172"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           style="fill:#ffffff;fill-opacity:1"
+           id="flowRegion6174"><use
+             id="use6176"
+             xlink:href="#rect4669"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6178">tomarFoto.timer</flowPara></flowRoot>      <rect
+         ry="2.8800044"
+         y="37.580372"
+         x="49.48864"
+         height="12"
+         width="101.66668"
+         id="rect6188"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.17517;stroke-opacity:1" />
+      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6202"
+         style="font-style:normal;font-weight:normal;font-size:10.58333397px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6204"><use
+             id="use6206"
+             xlink:href="#rect6188"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6208">tomarFoto.service</flowPara></flowRoot>      <rect
+         ry="2.8800042"
+         y="85.580368"
+         x="-51.178055"
+         height="12"
+         width="94.666679"
+         id="rect6188-6"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.16903202;stroke-opacity:1" />
+      <rect
+         ry="2.8800042"
+         y="109.58037"
+         x="50.155281"
+         height="12"
+         width="114.66668"
+         id="rect6188-1"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.18603259;stroke-opacity:1" />
+      <rect
+         ry="2.8800042"
+         y="73.580368"
+         x="212.29172"
+         height="12"
+         width="121.33336"
+         id="rect6188-3"
+         style="fill:#b1b9d3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.19136411;stroke-opacity:1" />
+      <rect
+         ry="2.8800042"
+         y="49.580372"
+         x="49.48864"
+         height="12"
+         width="75.666679"
+         id="rect6188-9"
+         style="fill:#fcf765;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15112029;stroke-opacity:1;paint-order:markers stroke fill" />
+      <rect
+         ry="2.8800042"
+         y="121.58037"
+         x="50.155281"
+         height="12"
+         width="87.000015"
+         id="rect6188-9-9"
+         style="fill:#fcf765;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.16204293;stroke-opacity:1;paint-order:markers stroke fill" />
+      <rect
+         ry="2.8800042"
+         y="85.580368"
+         x="212.29172"
+         height="12"
+         width="96.000015"
+         id="rect6188-9-1"
+         style="fill:#fcf765;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.17021823;stroke-opacity:1;paint-order:markers stroke fill" />
+      <rect
+         ry="2.8800042"
+         y="73.580368"
+         x="43.488625"
+         height="12"
+         width="81.666679"
+         id="rect6188-9-91"
+         style="fill:#fca965;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.15699755;stroke-opacity:1;paint-order:markers stroke fill" />
+      <rect
+         ry="2.8800042"
+         y="97.580368"
+         x="-51.178055"
+         height="12"
+         width="216.00002"
+         id="rect6188-9-0"
+         style="fill:#a8de92;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.25532734;stroke-opacity:1;paint-order:markers stroke fill" />
+      <rect
+         ry="2.8800042"
+         y="61.580372"
+         x="125.15532"
+         height="12"
+         width="208.46974"
+         id="rect6188-9-0-5"
+         style="fill:#de92de;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.25083721;stroke-opacity:1;paint-order:markers stroke fill" />
+      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6430"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6432"><use
+             id="use6434"
+             xlink:href="#rect6188-9-0-5"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6436">/home/pi/Fotos/&lt;aammddHHMM.jpg&gt;</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6450"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6452"><use
+             id="use6454"
+             xlink:href="#rect6188-9"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6456">tomarFoto.sh</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6464"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6466"><use
+             id="use6468"
+             xlink:href="#rect6188-9-91"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6470">syncUSB.path</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6472"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6474"><use
+             id="use6476"
+             xlink:href="#rect6188-6"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6478">syncUSB.service</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6480"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6482"><use
+             id="use6484"
+             xlink:href="#rect6188-9-0"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6486">rsync -avh /home/Pi/Fotos /mnt/bkpUSB</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6488"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6490"><use
+             id="use6492"
+             xlink:href="#rect6188-1"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6494">syncUSBLog.service</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6496"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6498"><use
+             id="use6500"
+             xlink:href="#rect6188-9-9"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6502">syncUSBLog.sh</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6504"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6506"><use
+             id="use6508"
+             xlink:href="#rect6188-3"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6510">tomarFotoLog.service</flowPara></flowRoot>      <flowRoot
+         transform="translate(-57.511352,17.913372)"
+         id="flowRoot6512"
+         style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><flowRegion
+           id="flowRegion6514"><use
+             id="use6516"
+             xlink:href="#rect6188-9-1"
+             y="0"
+             x="0"
+             width="100%"
+             height="100%"
+             transform="translate(57.511352,-17.913372)" /></flowRegion><flowPara
+           id="flowPara6518">tomarFotoLog.sh</flowPara></flowRoot>    </g>
+  </g>
+</svg>
