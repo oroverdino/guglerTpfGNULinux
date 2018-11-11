@@ -239,6 +239,13 @@ Ha llegado el momento de configurar los servicios en systemd. Para entender caba
 
 Por cada hora se toma una fotograf\'ia que es guardada en un directorio del sistema, /home/pi/Fotos, y se escribe una entrada registrando el evento. Entonces necesitamos una \emph{unit.timer}: \textbf{tomarFoto.timer}, que active una \emph{unit.service}: \textbf{tomarFoto.service}, que tome la fotograf\'ia y active otra \emph{unit.service}: \textbf{tomarFotoLog.service}, que realice el log. Cada vez que el directorio /home/pi/Fotos cambie (es decir, cuando se crea un nuevo archivo en \'el) se activa una \emph{unit.path}: \textbf{syncUSB.path}, que activa una \emph{unit.service}: \textbf{syncUSB.service} que sincroniza ese directorio con otro directorio en la memoria USB, que a su vez activa una \emph{unit.service}: \textbf{syncUSBLog.service}, que hace un logging\footnote{Acci\'on de realizar un log} de esta acci\'on.\\
 
+\begin{figure}
+\centering
+    \includegraphics[scale=0.25]{pictos/tomarFoto.png}}
+    \caption{Algoritmo para tomar una foto}
+    \label{fig:tomarFoto}
+\end{figure}
+
 Cada \SI{6}{h} se sincroniza la carpeta /home/pi/Fotos con una carpeta en el cloud de Drive y se hace un logging de esta acci\'on. Ya deber\'iamos sospechar lo que necesitamos, una \emph{unit.timer}: \textbf{syncDrive.timer}, que active una \emph{unit.service}: \textbf{syncDrive.service}, que sincronice y que a su vez active una \emph{unit.service}: \textbf{syncDriveLog.service}, que haga el log.\\
 
 Empecemos por el servicio que justifica este informe: \emph{tomarFoto.service}\\
