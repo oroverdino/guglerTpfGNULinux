@@ -43,16 +43,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.56126601"
-     inkscape:cx="382.58298"
-     inkscape:cy="529.69986"
+     inkscape:zoom="0.28063301"
+     inkscape:cx="-53.085205"
+     inkscape:cy="535.46849"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-grids="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="1366"
+     inkscape:window-width="1366"
+     inkscape:window-height="719"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
@@ -63,7 +63,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -183,7 +183,7 @@
              transform="translate(-35.826744,-12.727922)" /></flowRegion><flowPara
            id="flowPara6420">rclone sync /home/pi/Fotos drive:Fotos</flowPara></flowRoot>    </g>
     <g
-       id="g6935"
+       id="g4756"
        inkscape:export-xdpi="47.139999"
        inkscape:export-ydpi="47.139999">
       <path
@@ -197,9 +197,9 @@
          y="25.580372"
          x="151.15532"
          height="12"
-         width="95.333336"
+         width="99.104568"
          id="rect4669"
-         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.22229445;stroke-opacity:1" />
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.22664861;stroke-opacity:1" />
       <flowRoot
          transform="translate(-57.511352,17.913372)"
          id="flowRoot6172"
