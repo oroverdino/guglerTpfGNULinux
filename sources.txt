@@ -23,6 +23,7 @@ https://www.redpill-linpro.com/sysadvent/2016/12/07/systemd-timers.html
 
 ## logging
 https://serverfault.com/questions/573946/how-can-i-send-a-message-to-the-systemd-journal-from-the-command-line
+https://www.loggly.com/ultimate-guide/linux-logging-with-systemd/
 
 ## gnu/linux philosophy
 https://www.tldp.org/LDP/GNU-Linux-Tools-Summary/html/c1089.htm

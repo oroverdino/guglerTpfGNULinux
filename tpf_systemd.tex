@@ -276,7 +276,15 @@ ExecStart=/home/leandro/scripts/tomarFoto.sh
 \end{mdframed}
 \end{scriptsize}
 
-Por convenci\'on las unit de servicio se nombran como el servicio que ejecutan.
+Por convenci\'on las unit de servicio se nombran como el servicio que ejecutan.\\
+
+--\emph{Entiendo} ---dice un probable lector---, \emph{?`pero qu\'e es una \emph{unit}?}\\
+
+En el supuesto improbable de que \'ese lector se est\'e anoticiando con \'este informe de systemd, a continuaci\'on una breve descripci\'on. Systemd es el administrador de servicios\footnote{Demonios.} que reemplaza al venerable SysVinit con un enfoque diferente del manejo de recursos, tanto dispositivos, puntos de montaje, sockets, etc. Por ejemplo, el tiempo de booteo se acorta \emph{dram\'aticamente} debido a que systemd implementa una agresiva paralelizaci\'on de los servicios, en contraste con SysVinit que es secuencial. Los scripts y daemons de SysVinit son compatibles con systemd.\\
+
+Una de las ventajas de systemd es su simpleza en la configuraci\'on. La columna vertebral de systemd son las unit: archivos de texto plano que habitan en /lib/systemd/system con una extensi\'on que indica qu\'e tipo de unit es (service, path, mount point, target, timer, device, socket, etc.). Brevemente, una unit describe un recurso y le indica a systemd c\'omo debe activarlo. No todas las unit est\'an activadas al inicio, muchas inician s\'olo cuando son necesarias, optimizando el sistema de manera notable. Cuando una de \'estas units est\'a activa un link simb\'olico se crea en /etc/systemd/system. En este caso de estudio, vamos a crear las unit que se necesitan en este \'ultimo directorio, porque por convenci\'on s\'olo las unit \emph{nativas} del sistema operativo deben estar en /lib/systemd/system.\\
+
+
 
 \section{Timers}
 
