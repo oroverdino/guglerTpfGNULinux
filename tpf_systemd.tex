@@ -103,7 +103,7 @@ En el siguiente c\'odigo vemos c\'omo listamos los dispositivos conectados busca
 
 \begin{lstlisting}
 !\#! blkid -o list
-!\#! umount /media/leandro/0403-0201
+!\#! umount /media/pi/0403-0201
 !\#! 7z x /tmp/2018-06-27-raspbian-stretch-lite.zip
 !\#! dd bs=4M if=/tmp/2018-06-27-raspbian-stretch-lite.img of=/dev/mmcblk0 status=progress
 \end{lstlisting}
@@ -203,7 +203,7 @@ Veamos brevemente qu\'e es lo que configuramos en esta \emph{unidad}:
 
 \begin{description}
     \item [Description=] Aqu\'i debe indicarse brevemente y lo m\'as claro que se pueda qu\'e es lo que hace esta unidad.
-    \item [Before=] En este caso le estamos indicando a systemd que retrase el inicio de local-fs.target y umount.target hasta que nuestra unidad termine de iniciar. Evitamos as\'i alg\'un conflicto (por ejemplo, que nuestra memoria USB se monte en /media/leandro/ y no en /mnt/bkpUSB).\\
+    \item [Before=] En este caso le estamos indicando a systemd que retrase el inicio de local-fs.target y umount.target hasta que nuestra unidad termine de iniciar. Evitamos as\'i alg\'un conflicto (por ejemplo, que nuestra memoria USB se monte en /media/pi/ y no en /mnt/bkpUSB).\\
     \item [What=] Indicamos unequ\'ivocamente el dispositivo que queremos montar.
     \item [Where=] Indicamos d\'onde queremos montar ese dispositivo.
     \item [Type=] Cu\'al es el sistema de archivos que va a montar (\emph{filesystem}).
@@ -284,7 +284,13 @@ En el supuesto improbable de que \'ese lector se est\'e anoticiando con \'este i
 
 Una de las ventajas de systemd es su simpleza en la configuraci\'on. La columna vertebral de systemd son las unit: archivos de texto plano que habitan en /lib/systemd/system con una extensi\'on que indica qu\'e tipo de unit es (service, path, mount point, target, timer, device, socket, etc.). Brevemente, una unit describe un recurso y le indica a systemd c\'omo debe activarlo. No todas las unit est\'an activadas al inicio, muchas inician s\'olo cuando son necesarias, optimizando el sistema de manera notable. Cuando una de \'estas units est\'a activa un link simb\'olico se crea en /etc/systemd/system. En este caso de estudio, vamos a crear las unit que se necesitan en este \'ultimo directorio, porque por convenci\'on s\'olo las unit \emph{nativas} del sistema operativo deben estar en /lib/systemd/system.\\
 
+Retomando, la unit tomarFoto.service tiene dos secciones: \emph{[Unit]} y \emph{[Service]}. La primera es opcional (aunque rara vez se omite) y posee informaci\'on de la unit; es com\'un a todas. La otra secci\'on es espec\'ifica de este tipo de unit. 
 
+\begin{description}
+    \item [Description=] Esta secci\'on es descriptiva, pensada para la interfase del usuario.
+    \item [Type=] Indica c\'omo debe activarse este servicio, \emph{qu\'e tipo de servicio es}. No nos interesa que systemd siga a este servicio luego de ejecutarse, por eso en lugar de \emph{simple} le indicamos \emph{oneshot}.
+    \item [ExecStart=] Comandos con sus argumentos que ser\'an ejecutados cuando este servicio inicie. Sin embargo, como le indicamos que el Type es oneshot s\'olo hay que poner uno.
+\end{description}
 
 \section{Timers}
 
