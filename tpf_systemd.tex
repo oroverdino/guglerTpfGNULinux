@@ -289,8 +289,15 @@ Retomando, la unit tomarFoto.service tiene dos secciones: \emph{[Unit]} y \emph{
 \begin{description}
     \item [Description=] Esta secci\'on es descriptiva, pensada para la interfase del usuario.
     \item [Type=] Indica c\'omo debe activarse este servicio, \emph{qu\'e tipo de servicio es}. No nos interesa que systemd siga a este servicio luego de ejecutarse, por eso en lugar de \emph{simple} le indicamos \emph{oneshot}.
-    \item [ExecStart=] Comandos con sus argumentos que ser\'an ejecutados cuando este servicio inicie. Sin embargo, como le indicamos que el Type es oneshot s\'olo hay que poner uno.
+    \item [ExecStart=] Comandos con sus argumentos que ser\'an ejecutados cuando este servicio inicie. Sin embargo, como le indicamos que el Type es oneshot s\'olo hay que poner uno, que en este caso es tomarFoto.sh que est\'a alojado en el directorio /home/pi/scripts.
 \end{description}
+
+Ahora podemos tomar una foto de dos formas\footnote{en el supuesto que el script tomarFoto.sh cumpla lo que promete.}:
+\begin{lstlisting}
+!\$! /home/pi/scripts/tomarFoto.sh
+!o a trav\'es de systemd:!
+!\$! systemctl start tomarFoto.service
+\end{lstlisting}
 
 \section{Timers}
 
