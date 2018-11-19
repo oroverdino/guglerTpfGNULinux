@@ -289,7 +289,7 @@ Retomando, la unit tomarFoto.service tiene dos secciones: \emph{[Unit]} y \emph{
 \begin{description}
     \item [Description=] Esta secci\'on es descriptiva, pensada para la interfase del usuario.
     \item [Type=] Indica c\'omo debe activarse este servicio, \emph{qu\'e tipo de servicio es}. No nos interesa que systemd siga a este servicio luego de ejecutarse, por eso en lugar de \emph{simple} le indicamos \emph{oneshot}.
-    \item [ExecStart=] Comandos con sus argumentos que ser\'an ejecutados cuando este servicio inicie. Sin embargo, como le indicamos que el Type es oneshot s\'olo hay que poner uno.
+    \item [ExecStart=] Comandos con sus argumentos que ser\'an ejecutados cuando este servicio inicie. Sin embargo, como le indicamos que el Type es oneshot s\'olo hay que poner uno. 
 \end{description}
 
 \section{Timers}
