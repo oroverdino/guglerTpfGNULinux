@@ -16,9 +16,19 @@
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{epigraph}
 
-\usepackage{framed,color}
-\definecolor{shadecolor}{rgb}{1,1,0.9}
-\usepackage{mdframed}[backgroundcolor=yellow]
+\usepackage[framemethod=TikZ]{mdframed}
+\newenvironment{unitFrame}[1][]{%
+    \begin{mdframed}[%
+        frametitle={#1},
+        skipabove=\baselineskip plus 2pt minus 1pt,
+        skipbelow=\baselineskip plus 2pt minus 1pt,
+        linewidth=0.5pt,
+        frametitlerule=true,
+        frametitlebackgroundcolor=gray!30
+    ]%
+}{%
+    \end{mdframed}
+}
 
 \usepackage{listings}
 \lstset{
@@ -135,7 +145,7 @@ No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato 
 
 \subsection{C\'amara}
 
-Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara modular, que se conecta mediante un cable plano dise\~nado para romperse con facilidad (Figura \ref{fig:ribbon}). Se compra, se conecta y funciona luego de habilitar el puerto. Consume alrededor de $250 mAh$ desde el momento en que es habilitada (para el caso, desde el booteo); \'este es un factor a tener en cuenta porque suele creerse que s\'olo consume energ\'ia cuando captura una imagen o graba un video, lo cierto es que hay un leve aumento de consumo pero es el proceso de \emph{grabar} la imagen en el disco (la memoria USB en este caso).\\
+Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara modular, que se conecta mediante un cable plano dise\~nado para romperse con facilidad (Figura \ref{fig:ribbon}). Se compra, se conecta y funciona luego de habilitar el puerto. Consume alrededor de \SI{250}{mAh} desde el momento en que es habilitada (para el caso, desde el booteo); \'este es un factor a tener en cuenta porque suele creerse que s\'olo consume energ\'ia cuando captura una imagen o graba un video, lo cierto es que hay un leve aumento de consumo pero es el proceso de \emph{grabar} la imagen en el disco (la memoria USB en este caso).\\
 
 \begin{figure}
 \centering
@@ -181,7 +191,8 @@ Se busca el UUID\footnote{\emph{Universally Unique IDentifiers}, es una forma un
 
 Para finalmente editar la unidad de montaje como a continuaci\'on:
 \begin{scriptsize}
-\begin{mdframed}
+%\begin{mdframed}
+\begin{unitFrame}[/etc/systemd/system/mnt-bkpUSB.mount]
 \begin{verbatim}
 [Unit]
 Description=USB backup
@@ -196,7 +207,8 @@ Options=defaults
 [Install]
 WantedBy=local-fs.target
 \end{verbatim}
-\end{mdframed}
+\end{unitFrame}
+%\end{mdframed}
 \end{scriptsize}
 
 Veamos brevemente qu\'e es lo que configuramos en esta \emph{unidad}:
@@ -264,7 +276,8 @@ Empecemos por el servicio que justifica este informe: \emph{tomarFoto.service}\\
 \end{lstlisting}
 
 \begin{scriptsize}
-\begin{mdframed}
+%\begin{mdframed}
+\begin{unitFrame}[/etc/systemd/system/tomarForo.service]
 \begin{verbatim}
 [Unit]
 Description=Captura una foto
@@ -273,7 +286,8 @@ Description=Captura una foto
 Type=oneshot
 ExecStart=/home/leandro/scripts/tomarFoto.sh
 \end{verbatim}
-\end{mdframed}
+%\end{mdframed}
+\end{unitFrame}
 \end{scriptsize}
 
 Por convenci\'on las unit de servicio se nombran como el servicio que ejecutan.\\
@@ -295,9 +309,40 @@ Retomando, la unit tomarFoto.service tiene dos secciones: \emph{[Unit]} y \emph{
 Ahora podemos tomar una foto de dos formas\footnote{en el supuesto que el script tomarFoto.sh cumpla lo que promete.}:
 \begin{lstlisting}
 !\$! /home/pi/scripts/tomarFoto.sh
-!o a trav\'es de systemd:!
+\end{lstlisting}
+o a trav\'es de systemd:
+\begin{lstlisting}
 !\$! systemctl start tomarFoto.service
 \end{lstlisting}
+
+Analicemos la Figura \ref{fig:tomarFoto}, al crear un archivo (la foto) en el directorio /home/pi/Fotos se dispara la unit syncUSB.service, ?`por qu\'e? Por la unit \emph{syncUSB.path}, que le indica a systemd que monitoree ese directorio; y cuando se produce un cambio systemd activa la unit asociada a syncUSB.path: \emph{syncUSB.service}.\\
+
+Entonces, una vez creadas las unit como se hizo con tomarFoto.service procedemos a editarlas:\\
+
+\begin{scriptsize}
+\begin{unitFrame}[/etc/systemd/system/syncUSB.path]
+\begin{verbatim}
+[Unit]
+Description=Monitorea el directorio Fotos
+
+[Path]
+PathModified=/home/pi/Fotos
+\end{verbatim}
+\end{unitFrame}
+\end{scriptsize}
+
+\begin{scriptsize}
+\begin{unitFrame}[/etc/systemd/system/syncUSB.service]
+\begin{verbatim}
+[Unit]
+Description=Sincroniza Fotos con el USB
+
+[Service]
+Type=oneshot
+ExecStart=/home/pi/scripts/syncUSB.sh
+\end{verbatim}
+\end{unitFrame}
+\end{scriptsize}
 
 \section{Timers}
 
