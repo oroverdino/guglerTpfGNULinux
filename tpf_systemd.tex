@@ -122,7 +122,7 @@ En el siguiente c\'odigo vemos c\'omo listamos los dispositivos conectados busca
 
 Este proyecto necesita una fuente de alimentaci\'on que resuelva el problema de los cortes espor\'adicos de energ\'ia. Podr\'ia emplearse una UPS\footnote{\emph{Uninterruptible Power Supply.}} pero con un cargador de celular que disponga de al menos una salida de energ\'ia \emph{mientras se est\'a cargando} resuelve el problema.\\
 
-No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato importante es la potencia que debe poder entregar en el momento de m\'aximo consumo, que es cuando la rpi2 bootea y cuando graba una fotograf\'ia en el USB (Cuadro \ref{tab:energia}).
+No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato importante es la potencia que debe poder entregar en el momento de m\'aximo consumo, que es cuando la rpi2 bootea y cuando graba una fotograf\'ia en el USB (Cuadro~\ref{tab:energia}).
 
 \begin{table}[h!]
     \begin{center}
@@ -145,7 +145,7 @@ No ahondaremos aqu\'i sobre los detalles del \emph{power bank}, el \'unico dato 
 
 \subsection{C\'amara}
 
-Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara modular, que se conecta mediante un cable plano dise\~nado para romperse con facilidad (Figura \ref{fig:ribbon}). Se compra, se conecta y funciona luego de habilitar el puerto. Consume alrededor de \SI{250}{mAh} desde el momento en que es habilitada (para el caso, desde el booteo); \'este es un factor a tener en cuenta porque suele creerse que s\'olo consume energ\'ia cuando captura una imagen o graba un video, lo cierto es que hay un leve aumento de consumo pero es el proceso de \emph{grabar} la imagen en el disco (la memoria USB en este caso).\\
+Los creadores de rpi2 dispusieron de una interfase exclusiva para una c\'amara modular, que se conecta mediante un cable plano dise\~nado para romperse con facilidad (Figura~\ref{fig:ribbon}). Se compra, se conecta y funciona luego de habilitar el puerto. Consume alrededor de \SI{250}{mAh} desde el momento en que es habilitada (para el caso, desde el booteo); \'este es un factor a tener en cuenta porque suele creerse que s\'olo consume energ\'ia cuando captura una imagen o graba un video, lo cierto es que hay un leve aumento de consumo pero es el proceso de \emph{grabar} la imagen en el disco (la memoria USB en este caso).\\
 
 \begin{figure}
 \centering
@@ -162,7 +162,7 @@ Dicho lo cual, necesitamos una memoria USB de \SI{1}{GB}\footnote{Exactamente \S
 
 \subsubsection{3-2-1 backup rule}
 
-Si no se ha cultivado un esp\'iritu aventurero es conveniente tener un \emph{backup}. Seguiremos la conocida regla \textbf{3-2-1} para pol\'iticas de backup (Figura \ref{fig:321bkp}):
+Si no se ha cultivado un esp\'iritu aventurero es conveniente tener un \emph{backup}. Seguiremos la conocida regla \textbf{3-2-1} para pol\'iticas de backup (Figura~\ref{fig:321bkp}):
 \begin{description}
     \item [3] copias de las im\'agenes
     \item [2] copias en medios f\'isicos distintos
@@ -214,13 +214,14 @@ WantedBy=local-fs.target
 Veamos brevemente qu\'e es lo que configuramos en esta \emph{unidad}:
 
 \begin{description}
+\label{sec:wantedBy}
     \item [Description=] Aqu\'i debe indicarse brevemente y lo m\'as claro que se pueda qu\'e es lo que hace esta unidad.
     \item [Before=] En este caso le estamos indicando a systemd que retrase el inicio de local-fs.target y umount.target hasta que nuestra unidad termine de iniciar. Evitamos as\'i alg\'un conflicto (por ejemplo, que nuestra memoria USB se monte en /media/pi/ y no en /mnt/bkpUSB).\\
     \item [What=] Indicamos unequ\'ivocamente el dispositivo que queremos montar.
     \item [Where=] Indicamos d\'onde queremos montar ese dispositivo.
     \item [Type=] Cu\'al es el sistema de archivos que va a montar (\emph{filesystem}).
     \item [Options=] Las opciones de montaje, que conviene en \'este caso dejarlas predeterminadas.
-    \item [WantedBy=] \label{itm:wantedBy} Aqu\'i indicamos qu\'e unidad o servicio va a iniciar a \'esta unidad. No lo maneja systemd directamente, sino cuando se lo instala (cosa que debemos hacer para completar el automontaje, esto es: \lstinline{# systemctl enable mnt-bkpUSB.mount}) se crea un enlace simb\'olico de esta unidad en el directorio \emph{local-fs.target.wants}, que cuando inicia local-fs.target inicia mnt-bkpUSB.mount\footnote{Momento, ?`no le indicamos en \texttt{Before=} que retrase el inicio de local-fs.target?, ?`por qu\'e le decimos ahora que sea local-fs.target quien inicie a mnt-bkpUSB.mount? Brevemente: systemd sabe que tiene que iniciar local-fs.target, no mnt-bkpUSB.mount, a resultas nuestra unidad de automontaje inicia \emph{antes} pero \emph{a pedido} de local-fs.target.}.
+    \item [WantedBy=] Aqu\'i indicamos qu\'e unidad o servicio va a iniciar a \'esta unidad. No lo maneja systemd directamente, sino cuando se lo instala (cosa que debemos hacer para completar el automontaje, esto es: \lstinline{# systemctl enable mnt-bkpUSB.mount}) se crea un enlace simb\'olico de esta unidad en el directorio \emph{local-fs.target.wants}, que cuando inicia local-fs.target inicia mnt-bkpUSB.mount\footnote{Momento, ?`no le indicamos en \texttt{Before=} que retrase el inicio de local-fs.target?, ?`por qu\'e le decimos ahora que sea local-fs.target quien inicie a mnt-bkpUSB.mount? Brevemente: systemd sabe que tiene que iniciar local-fs.target, no mnt-bkpUSB.mount, a resultas nuestra unidad de automontaje inicia \emph{antes} pero \emph{a pedido} de local-fs.target.}.
 \end{description}
 
 Con SysVinit hab\'ia que modificar el archivo \texttt{/etc/fstab} y agregar una l\'inea como la siguiente\footnote{La opci\'on \emph{auto} indica que se automonte.}:
@@ -249,7 +250,7 @@ Los servicios ser\'an expuestos s\'olo en su objetivo, no describiremos el c\'od
 
 Ha llegado el momento de configurar los servicios en systemd. Para entender cabalmente los servicios que se necesitan repasemos los requerimientos.\\
 
-Por cada hora se toma una fotograf\'ia que es guardada en un directorio del sistema, /home/pi/Fotos, y se escribe una entrada registrando el evento. Entonces necesitamos una \emph{unit.timer}: \textbf{tomarFoto.timer}, que active una \emph{unit.service}: \textbf{tomarFoto.service}, que tome la fotograf\'ia y active otra \emph{unit.service}: \textbf{tomarFotoLog.service}, que realice el log. Cada vez que el directorio /home/pi/Fotos cambie (es decir, cuando se crea un nuevo archivo en \'el) se activa una \emph{unit.path}: \textbf{syncUSB.path}, que activa una \emph{unit.service}: \textbf{syncUSB.service} que sincroniza ese directorio con otro directorio en la memoria USB, que a su vez activa una \emph{unit.service}: \textbf{syncUSBLog.service}, que hace un logging\footnote{Acci\'on de realizar un log} de esta acci\'on (Figura \ref{fig:tomarFoto}).\\
+Por cada hora se toma una fotograf\'ia que es guardada en un directorio del sistema, /home/pi/Fotos, y se escribe una entrada registrando el evento. Entonces necesitamos una \emph{unit.timer}: \textbf{tomarFoto.timer}, que active una \emph{unit.service}: \textbf{tomarFoto.service}, que tome la fotograf\'ia y active otra \emph{unit.service}: \textbf{tomarFotoLog.service}, que realice el log. Cada vez que el directorio /home/pi/Fotos cambie (es decir, cuando se crea un nuevo archivo en \'el) se activa una \emph{unit.path}: \textbf{syncUSB.path}, que activa una \emph{unit.service}: \textbf{syncUSB.service} que sincroniza ese directorio con otro directorio en la memoria USB, que a su vez activa una \emph{unit.service}: \textbf{syncUSBLog.service}, que hace un logging\footnote{Acci\'on de realizar un log} de esta acci\'on (Figura~\ref{fig:tomarFoto}).\\
 
 \begin{figure}[h!]
 \centering
@@ -258,7 +259,7 @@ Por cada hora se toma una fotograf\'ia que es guardada en un directorio del sist
     \label{fig:tomarFoto}
 \end{figure}
 
-Cada \SI{6}{h} se sincroniza la carpeta /home/pi/Fotos con una carpeta en el cloud de Drive y se hace un logging de esta acci\'on. Ya deber\'iamos sospechar lo que necesitamos, una \emph{unit.timer}: \textbf{syncDrive.timer}, que active una \emph{unit.service}: \textbf{syncDrive.service}, que sincronice y que a su vez active una \emph{unit.service}: \textbf{syncDriveLog.service}, que haga el log (Figura \ref{fig:syncDrive}).\\
+Cada \SI{6}{h} se sincroniza la carpeta /home/pi/Fotos con una carpeta en el cloud de Drive y se hace un logging de esta acci\'on. Ya deber\'iamos sospechar lo que necesitamos, una \emph{unit.timer}: \textbf{syncDrive.timer}, que active una \emph{unit.service}: \textbf{syncDrive.service}, que sincronice y que a su vez active una \emph{unit.service}: \textbf{syncDriveLog.service}, que haga el log (Figura~\ref{fig:syncDrive}).\\
 
 \begin{figure}[h!]
 \centering
@@ -319,7 +320,7 @@ o a trav\'es de systemd:
 
 \subsection{tomarFoto.path}
 
-Analicemos la Figura \ref{fig:tomarFoto}, al crear un archivo (la foto) en el directorio /home/pi/Fotos se dispara la unit syncUSB.service, ?`por qu\'e? Por la unit \emph{syncUSB.path}, que le indica a systemd que monitoree ese directorio; y cuando se produce un cambio systemd activa la unit asociada a syncUSB.path: \emph{syncUSB.service}.\\
+Analicemos la Figura~\ref{fig:tomarFoto}, al crear un archivo (la foto) en el directorio /home/pi/Fotos se dispara la unit syncUSB.service, ?`por qu\'e? Por la unit \emph{syncUSB.path}, que le indica a systemd que monitoree ese directorio; y cuando se produce un cambio systemd activa la unit asociada a syncUSB.path: \emph{syncUSB.service}.\\
 
 Entonces, una vez creadas las unit como se hizo con tomarFoto.service procedemos a editarlas:
 
@@ -360,7 +361,7 @@ En este caso es innecesario crear un script, pues tendr\'ia la misma l\'inea de 
 \end{lstlisting}
 \'Esto es, utilizamos el gestor de paquetes \emph{aptitude}\footnote{Se dice que es un poco m\'as expeditivo y eficiente que apt (o apt-get).} para actualizar la base del repositorio y a continuaci\'on instalamos rsync\footnote{Esa continuaci\'on est\'a indicada por los dos signos ampersand (\&\&)}.\\
 
-La estructura de rsync es cl\'asica: \emph{comando \emph{opciones origen \emph{destino}
+La estructura de rsync es cl\'asica: \emph{comando} \emph{opciones} \emph{origen} \emph{destino}
 
 \subsection{Logging}
 
@@ -384,7 +385,7 @@ WantedBy=tomarFoto.service
 \end{unitFrame}
 \end{scriptsize}
 
-Esta unit tiene una secci\'on \emph{[Install]} que las otras no necesitaban. Aqu\'i encontramos la informaci\'on que systemctl necesita para \emph{instalar} este servicio (ver \ref{itm:wantedBy}).
+Esta unit tiene una secci\'on \emph{[Install]} que las otras no necesitaban. Aqu\'i encontramos la informaci\'on que systemctl necesita para \emph{instalar} este servicio (ver Secci\'on~\ref{sec:wantedBy}).
 \begin{description}
     \item [WantedBy=] Se le indica a systemctl que en la instalaci\'on de este servicio cree un enlace simb\'olico a esta unit dentro de la carpeta /etc/systemd/system/tomarFoto.service.wants (que ser\'a creada autom\'aticamente), de modo tal que cuando tomarFoto.service inicie tambi\'en lo haga tomarFotoLog.service.
 \end{description}
