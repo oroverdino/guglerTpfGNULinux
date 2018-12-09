@@ -24,7 +24,7 @@
         skipbelow=\baselineskip plus 2pt minus 1pt,
         linewidth=0.5pt,
         frametitlerule=true,
-        frametitlebackgroundcolor=gray!30
+        frametitlebackgroundcolor=gray!10
     ]%
 }{%
     \end{mdframed}
@@ -276,7 +276,6 @@ Empecemos por el servicio que justifica este informe: \emph{tomarFoto.service}\\
 \end{lstlisting}
 
 \begin{scriptsize}
-%\begin{mdframed}
 \begin{unitFrame}[/etc/systemd/system/tomarForo.service]
 \begin{verbatim}
 [Unit]
@@ -286,7 +285,6 @@ Description=Captura una foto
 Type=oneshot
 ExecStart=/home/leandro/scripts/tomarFoto.sh
 \end{verbatim}
-%\end{mdframed}
 \end{unitFrame}
 \end{scriptsize}
 
@@ -317,7 +315,7 @@ o a trav\'es de systemd:
 
 Analicemos la Figura \ref{fig:tomarFoto}, al crear un archivo (la foto) en el directorio /home/pi/Fotos se dispara la unit syncUSB.service, ?`por qu\'e? Por la unit \emph{syncUSB.path}, que le indica a systemd que monitoree ese directorio; y cuando se produce un cambio systemd activa la unit asociada a syncUSB.path: \emph{syncUSB.service}.\\
 
-Entonces, una vez creadas las unit como se hizo con tomarFoto.service procedemos a editarlas:\\
+Entonces, una vez creadas las unit como se hizo con tomarFoto.service procedemos a editarlas:
 
 \begin{scriptsize}
 \begin{unitFrame}[/etc/systemd/system/syncUSB.path]
@@ -331,6 +329,12 @@ PathModified=/home/pi/Fotos
 \end{unitFrame}
 \end{scriptsize}
 
+Este tipo de unit debe contener una secci\'on \emph{[Path]}
+
+\begin{description}
+    \item [PathModified=] Ruta absoluta del directorio o archivo a monitorear.
+\end{description}
+
 \begin{scriptsize}
 \begin{unitFrame}[/etc/systemd/system/syncUSB.service]
 \begin{verbatim}
@@ -339,10 +343,18 @@ Description=Sincroniza Fotos con el USB
 
 [Service]
 Type=oneshot
-ExecStart=/home/pi/scripts/syncUSB.sh
+ExecStart=rsync -avh /home/pi/Fotos/ /mnt/bkpUSB/
 \end{verbatim}
 \end{unitFrame}
 \end{scriptsize}
+
+En este caso es innecesario crear un script, pues tendr\'ia la misma l\'inea de c\'odigo. El programa \emph{rsync} puede instalarse directamente desde el repositorio de Debian:
+\begin{lstlisting}
+!\#! aptitude update && aptitude install -y rsync
+\end{lstlisting}
+\'Esto es, utilizamos el gestor de paquetes \emph{aptitude}\footnote{Se dice que es un poco m\'as expeditivo y eficiente que apt (o apt-get).} para actualizar la base del repositorio y a continuaci\'on instalamos rsync\footnote{Esa continuaci\'on est\'a indicada por los dos signos ampersand (\&\&)}.\\
+
+La estructura de rsync es cl\'asica: comando opciones origen destino
 
 \section{Timers}
 
