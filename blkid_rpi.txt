@@ -1,4 +1,0 @@
-/dev/mmcblk0p1: LABEL="boot" UUID="3725-1C05" TYPE="vfat" PARTUUID="75160d2a-01"
-/dev/mmcblk0p2: LABEL="rootfs" UUID="fd695ef5-f047-44bd-b159-2a78c53af20a" TYPE="ext4" PARTUUID="75160d2a-02"
-/dev/sda1: LABEL="t430" UUID="87dcbe0c-1e1f-4de7-8f1e-65bcb37a4152" TYPE="ext4" PARTUUID="2f5cf12d-acd3-4c5c-b700-e02fedd1b3d3"
-/dev/mmcblk0: PTUUID="75160d2a" PTTYPE="dos"
